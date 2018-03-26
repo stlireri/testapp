@@ -1,5 +1,6 @@
 
 require "selenium-webdriver"
+#require "chrome module"
 
 #Firefox browser instantiation
 driver = Selenium::WebDriver.for :chrome
@@ -21,12 +22,13 @@ EmailId = driver.find_element(:id, "Password")
 EmailId.send_keys "sampleuser7f7df27@gmail.com"
 
 #Clicking on the Submit Button
-SubmitButton = driver.find_elements(:name, "Sign In")
-SubmitButton.Click
+SubmitButton = driver.find_element(:xpath, "//input[@type='submit']")
+SubmitButton.click
 
-#Asserting whether the registration success message is diaplyed
-SuccessMessage = driver.find_element(:css, "div#divLoginFormSub > form > div:nth-of-type(2) > div > ul > li:nth-of-type(2)")
-"invalid email or password".eql? SuccessMessage.text
+#Asserting whether the registration error message is diaplyed
+SuccessMessage = driver.find_element(:xpath, "//li[contains(.,'Invalid user name or password')]")
+"invalid user name or password".eql? SuccessMessage.text
+
 #puts "Successfully completed the user registration and validated the Success message"
 
 #Quitting the browser
