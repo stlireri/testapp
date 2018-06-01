@@ -1,34 +1,34 @@
 
 require "selenium-webdriver"
+#require "chrome module"
 
-#Firefox browser instantiation
-driver = Selenium::WebDriver.for :chrome
+@driver = Selenium::WebDriver.for :chrome
+@url = "https://www.myvsms.com/"
 
-#Loading the assertselenium URL
-driver.navigate.to "http://nm.m-kopa.net"
+@driver.manage.window.maximize
 
-#Clicking on the Follow link present on the assertselenium home page
-#FollowButton  = driver.find_element(:link, "Follow")
-#FollowButton.click
+@driver.navigate.to @url 
+@driver.manage.timeouts.implicit_wait = 3 
 
-
+@driver.find_element(:id, 'login').click
 #Typing the UserName
-LoginButton = driver.find_element(:id, "UserNameOrEmail")
-LoginButton.send_keys "sampleuser77dff27"
-
-#Typing the Email-Id
-EmailId = driver.find_element(:id, "Password")
-EmailId.send_keys "sampleuser7f7df27@gmail.com"
-
+@driver.find_element(:id, 'email').send_keys "sampleuser7f7df27@gmail.com"
+#Typing the UserName
+@driver.find_element(:id, 'password').send_keys "sppemmc"
 #Clicking on the Submit Button
-SubmitButton = driver.find_elements(:name, "Sign In")
-SubmitButton.Click
+@driver.find_element(:id, 'login-btn').click
 
-#Asserting whether the registration success message is diaplyed
-SuccessMessage = driver.find_element(:css, "div#divLoginFormSub > form > div:nth-of-type(2) > div > ul > li:nth-of-type(2)")
-"invalid email or password".eql? SuccessMessage.text
+#Asserting whether the registration error message is diaplyed
+SuccessMessage = @driver.find_element(:xpath, "//*[@id='wrapper']/div[1]/div[1]/div[1]/div[1]/div[2]/form[1]/fieldset[1]/div[2]/div[1]/span[1]/strong[1]")
+"These credentials do not match our records.".eql? SuccessMessage.text
+
+verify { assert element_present?(:xpath, "//*[@id='wrapper']/div[1]/div[1]/div[1]/div[1]/div[2]/form[1]/fieldset[1]/div[2]/div[1]/span[1]/strong[1]") }
+
 #puts "Successfully completed the user registration and validated the Success message"
 
 #Quitting the browser
-driver.quit
-
+@driver.quit
+#logging the output
+Selenium::WebDriver.logger.level = :debug
+Selenium::WebDriver.logger.level = :'selenium.log'
+Selenium::WebDriver.logger.level = :info
